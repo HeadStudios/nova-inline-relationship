@@ -94,14 +94,14 @@ class NovaInlineRelationshipObserver
      */
     protected function getModelRelationships(Model $model)
     {
-        return collect(Nova::newResourceFromModel($model)->fields(request()))
-            ->flatMap(function ($value) {
-                return Integrate::fields($value);
-            })
-            ->filter(function ($value) {
-                return $value->component === 'nova-inline-relationship';
-            })
-            ->pluck('attribute')
-            ->all();
+    return collect(Nova::newResourceFromModel($model)->fields(\Laravel\Nova\Http\Requests\NovaRequest::createFrom(request())))
+        ->flatMap(function ($value) {
+            return Integrate::fields($value);
+        })
+        ->filter(function ($value) {
+            return $value->component === 'nova-inline-relationship';
+        })
+        ->pluck('attribute')
+        ->all();
     }
 }
